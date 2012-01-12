@@ -163,15 +163,26 @@ public class ScriptBuildStep extends Builder {
 			FilePath source = new FilePath(tempFile);
 			FilePath dest = new FilePath(Computer.currentComputer().getChannel(), workingDir + "/" + tempFile.getName());
 
-			log.log(Level.FINE, "Copying temporary file to " + Computer.currentComputer().getHostName() + ":" + workingDir + "/" + tempFile.getName());
-			source.copyTo(dest);
 
-			/*
-			 * Execute command remotely
-			 */
-			listener.getLogger().println("Executing temp file '" + tempFile.getPath() + "'");
-			int r = lastBuiltLauncher.launch().cmds(args).envs(env).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workingDir).join();
-			returnValue = (r == 0);
+			try {
+				log.log(Level.FINE, "Copying temporary file to " + Computer.currentComputer().getHostName() + ":" + workingDir + "/" + tempFile.getName());
+				source.copyTo(dest);
+				/*
+				 * Execute command remotely
+				 */
+				listener.getLogger().println("Executing temp file '" + tempFile.getPath() + "'");
+				int r = lastBuiltLauncher.launch().cmds(args).envs(env).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workingDir).join();
+				returnValue = (r == 0);
+			} finally {
+
+				try {
+					dest.delete();
+				} catch (Exception e) {
+					e.printStackTrace(listener.fatalError("Cannot remove temporary script file '" + dest.getName() + "'"));
+					returnValue = false;
+				}
+			}
+
 
 		} catch (IOException e) {
 			Util.displayIOException(e, listener);

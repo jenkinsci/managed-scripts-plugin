@@ -44,7 +44,7 @@ import org.kohsuke.stapler.bind.JavaScriptMethod;
  * A project that uses this builder can choose a build step from a list of predefined config files that are uses as command line scripts. The hash-bang sequence at the beginning of each file is used
  * to determine the interpreter.
  * <p>
- * 
+ *
  * @author Norman Baumann
  * @author Dominik Bartholdi (imod)
  */
@@ -64,23 +64,35 @@ public class ScriptBuildStep extends Builder {
         }
     }
 
+    public static class ScriptBuildStepArgs {
+        public final boolean defineArgs;
+        public final ArgValue[] buildStepArgs;
+
+        @DataBoundConstructor
+        public ScriptBuildStepArgs(boolean defineArgs, ArgValue[] buildStepArgs)
+        {
+            this.defineArgs = defineArgs;
+            this.buildStepArgs = buildStepArgs;
+        }
+    }
+
     /**
      * The constructor used at form submission
-     * 
+     *
      * @param buildStepId
      *            the Id of the config file
-     * @param defineArgs
-     *            if the passed arguments should be saved (required because of html form submission, which also sends hidden values)
-     * @param buildStepArgs
-     *            list of arguments specified as buildStepargs
+     * @param scriptBuildStepArgs
+     *            whether to save the args and arg values (the boolean is required because of html form submission, which also sends hidden values)
      */
     @DataBoundConstructor
-    public ScriptBuildStep(String buildStepId, boolean defineArgs, ArgValue[] buildStepArgs) {
+    public ScriptBuildStep(String buildStepId, ScriptBuildStepArgs scriptBuildStepArgs)
+    {
         this.buildStepId = buildStepId;
         List<String> l = null;
-        if (defineArgs && buildStepArgs != null) {
+        if (scriptBuildStepArgs != null && scriptBuildStepArgs.defineArgs
+                && scriptBuildStepArgs.buildStepArgs != null) {
             l = new ArrayList<String>();
-            for (ArgValue arg : buildStepArgs) {
+            for (ArgValue arg : scriptBuildStepArgs.buildStepArgs) {
                 l.add(arg.arg);
             }
         }
@@ -217,7 +229,7 @@ public class ScriptBuildStep extends Builder {
 
         /**
          * Return all config files (templates) that the user can choose from when creating a build step. Ordered by name.
-         * 
+         *
          * @return A collection of config files of type {@link ScriptConfig}.
          */
         public Collection<Config> getAvailableBuildTemplates() {
@@ -232,7 +244,7 @@ public class ScriptBuildStep extends Builder {
 
         /**
          * Returns a Config object for a given config file Id.
-         * 
+         *
          * @param id
          *            The Id of a config file.
          * @return If Id can be found a Config object that represents the given Id is returned. Otherwise null.
@@ -243,7 +255,7 @@ public class ScriptBuildStep extends Builder {
 
         /**
          * gets the argument description to be displayed on the screen when selecting a config in the dropdown
-         * 
+         *
          * @param configId
          *            the config id to get the arguments description for
          * @return the description
@@ -270,9 +282,15 @@ public class ScriptBuildStep extends Builder {
             return "please select a script!";
         }
 
+        @JavaScriptMethod
+        public List<Arg> getArgs(String configId) {
+            final ScriptConfig config = getBuildStepConfigById(configId);
+            return config.args;
+        }
+
         /**
          * validate that an existing config was chosen
-         * 
+         *
          * @param value
          *            the configId
          * @return

@@ -30,6 +30,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
 
+import javax.servlet.ServletException;
+
 /**
  * LibraryBuildStep {@link Builder}.
  * <p>
@@ -255,6 +257,10 @@ public class ScriptBuildStep extends Builder {
             return items;
         }
 
+
+        public FormValidation doCheckBuildStepId(@QueryParameter String buildStepId) {
+            return FormValidation.ok("well done: "+buildStepId);
+        }
 
 
         /**

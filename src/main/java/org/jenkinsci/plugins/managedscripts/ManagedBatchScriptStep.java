@@ -88,6 +88,22 @@ public class ManagedBatchScriptStep extends DurableTaskStep{
         this.scriptId = buildStepId;
     }
     
+    public ManagedBatchScriptStep(WinBatchBuildStep step) {
+        if (step == null) {
+            throw new IllegalArgumentException();
+        }
+        this.scriptId = step.getBuildStepId();
+        this.buildStepArgs = step.getBuildStepArgs();
+        if (this.buildStepArgs!= null && this.buildStepArgs.length>0){
+            ArgValue[] args=new ArgValue[buildStepArgs.length];
+            for (int c=0; c<buildStepArgs.length;c++){
+                args[c]=new ArgValue(buildStepArgs[c]);
+            }
+            this.scriptBuildStepArgs=new ScriptBuildStepArgs(true,args);
+        }
+        
+    }
+    
     @Override
     protected DurableTask task() {
         return new ManagedBatchScript(scriptId, buildStepArgs);

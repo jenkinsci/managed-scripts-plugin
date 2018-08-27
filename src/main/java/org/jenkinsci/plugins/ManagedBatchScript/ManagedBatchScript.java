@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.jenkinsci.plugins.ManagedBatchScript;
+package org.jenkinsci.plugins.managedscripts;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.EnvVars;
@@ -37,7 +37,6 @@ import org.jenkinsci.lib.configprovider.model.Config;
 import org.jenkinsci.plugins.configfiles.ConfigFiles;
 import org.jenkinsci.plugins.durabletask.DurableTaskDescriptor;
 import org.jenkinsci.plugins.durabletask.FileMonitoringTask;
-import org.jenkinsci.plugins.managedscripts.ManagedBatchScriptStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -119,7 +118,7 @@ public final class ManagedBatchScript extends FileMonitoringTask {
         // Add additional parameters set by user
         if (buildStepArgs != null) {
             for (String arg : buildStepArgs) {
-                 commandline.append(" ");
+                commandline.append(" ");
                 commandline.append(arg);
             }
         }

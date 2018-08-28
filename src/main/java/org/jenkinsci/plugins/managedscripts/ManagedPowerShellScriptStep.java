@@ -16,7 +16,7 @@ import org.jenkinsci.Symbol;
 import org.jenkinsci.lib.configprovider.model.Config;
 import org.jenkinsci.plugins.configfiles.ConfigFiles;
 import org.jenkinsci.plugins.durabletask.DurableTask;
-import org.jenkinsci.plugins.managedscripts.WinBatchConfig.Arg;
+import org.jenkinsci.plugins.managedscripts.PowerShellConfig.Arg;
 import org.jenkinsci.plugins.workflow.steps.durable_task.DurableTaskStep;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -27,12 +27,12 @@ import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * A project that uses this builder can choose a build step from a list of
- * predefined windows batch files that are used as command line scripts.
+ * predefined powershell files that are used as command line scripts.
  * <p>
  *
  * @author Michael DK Fowler
  */
-public class ManagedBatchScriptStep extends DurableTaskStep {
+public class ManagedPowerShellScriptStep extends DurableTaskStep {
 
     private final String scriptId;
     private String[] buildStepArgs;
@@ -64,19 +64,16 @@ public class ManagedBatchScriptStep extends DurableTaskStep {
      * The constructor used at form submission
      *
      * @param buildStepId the Id of the config file
-     * @param scriptBuildStepArgs whether to save the args and arg values (the
-     * boolean is required because of html form submission, which also sends
-     * hidden values)
      */
     @DataBoundConstructor
-    public ManagedBatchScriptStep(String buildStepId) {
+    public ManagedPowerShellScriptStep(String buildStepId) {
         if (buildStepId == null) {
             throw new IllegalArgumentException();
         }
         this.scriptId = buildStepId;
     }
 
-    public ManagedBatchScriptStep(WinBatchBuildStep step) {
+    public ManagedPowerShellScriptStep(PowerShellBuildStep step) {
         if (step == null) {
             throw new IllegalArgumentException();
         }
@@ -122,11 +119,11 @@ public class ManagedBatchScriptStep extends DurableTaskStep {
     // Overridden for better type safety.
     @Override
     protected DurableTask task() {
-        return new ManagedBatchScript(scriptId, buildStepArgs);
+        return new ManagedPowerShellScript(scriptId, this.scriptBuildStepArgs);
     }
 
     /**
-     * Descriptor for {@link ManagedBatchScriptStep}.
+     * Descriptor for {@link ManagedPowerShellScriptStep}.
      */
     @Symbol("managedbat")
     @Extension
@@ -134,7 +131,7 @@ public class ManagedBatchScriptStep extends DurableTaskStep {
 
         @Override
         public String getFunctionName() {
-            return "managedbat";
+            return "managedpowershell";
         }
 
         /**
@@ -142,17 +139,62 @@ public class ManagedBatchScriptStep extends DurableTaskStep {
          */
         @Override
         public String getDisplayName() {
-            return "Managed Windows Batch Script";
+            return "Managed PowerShell Script";
         }
 
         /**
-         * Return all batch files (templates) that the user can choose from when
-         * creating a build step. Ordered by name.
+         * gets the argument description to be displayed on the screen when
+         * selecting a config in the dropdown
          *
-         * @return A collection of batch files of type {@link WinBatchConfig}.
+         * @param configId the config id to get the arguments description for
+         * @return the description
+         */
+        private String getArgsDescription(@AncestorInPath Item context, String configId) {
+            final PowerShellConfig config = ConfigFiles.getByIdOrNull(context, configId);
+            if (config != null) {
+                if (config.args != null && !config.args.isEmpty()) {
+                    StringBuilder sb = new StringBuilder("Required arguments: ");
+                    int i = 1;
+                    for (Iterator<Arg> iterator = config.args.iterator(); iterator.hasNext(); i++) {
+                        Arg arg = iterator.next();
+                        sb.append(i).append(". ").append(arg.name);
+                        if (iterator.hasNext()) {
+                            sb.append(" | ");
+                        }
+                    }
+                    return sb.toString();
+                } else {
+                    return "No arguments required";
+                }
+            }
+            return "please select a valid script!";
+        }
+
+        /**
+         * validate that an existing config was chosen
+         *
+         * @param buildStepId the buildStepId
+         * @return
+         */
+        public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
+            final PowerShellConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
+            if (config != null) {
+                return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));
+            } else {
+                return FormValidation.error("you must select a valid powershell file");
+            }
+        }
+
+        /**
+         * Return all powershell files (templates) that the user can choose from
+         * when creating a build step. Ordered by name.
+         *
+         * @param context
+         * @return A collection of powershell files of type
+         * {@link PowerShellConfig}.
          */
         public ListBoxModel doFillBuildStepIdItems(@AncestorInPath ItemGroup context) {
-            List<Config> configsInContext = ConfigFiles.getConfigsInContext(context, WinBatchConfig.WinBatchConfigProvider.class);
+            List<Config> configsInContext = ConfigFiles.getConfigsInContext(context, PowerShellConfig.PowerShellConfigProvider.class);
             Collections.sort(configsInContext, new Comparator<Config>() {
                 @Override
                 public int compare(Config o1, Config o2) {
@@ -165,49 +207,6 @@ public class ManagedBatchScriptStep extends DurableTaskStep {
                 items.add(config.name, config.id);
             }
             return items;
-        }
-    }
-
-    /**
-     * gets the argument description to be displayed on the screen when
-     * selecting a config in the dropdown
-     *
-     * @param configId the config id to get the arguments description for
-     * @return the description
-     */
-    private String getArgsDescription(@AncestorInPath Item context, String configId) {
-        final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, configId);
-        if (config != null) {
-            if (config.args != null && !config.args.isEmpty()) {
-                StringBuilder sb = new StringBuilder("Required arguments: ");
-                int i = 1;
-                for (Iterator<Arg> iterator = config.args.iterator(); iterator.hasNext(); i++) {
-                    Arg arg = iterator.next();
-                    sb.append(i).append(". ").append(arg.name);
-                    if (iterator.hasNext()) {
-                        sb.append(" | ");
-                    }
-                }
-                return sb.toString();
-            } else {
-                return "No arguments required";
-            }
-        }
-        return "please select a valid script!";
-    }
-
-    /**
-     * validate that an existing config was chosen
-     *
-     * @param buildStepId the buildStepId
-     * @return
-     */
-    public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
-        final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
-        if (config != null) {
-            return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));
-        } else {
-            return FormValidation.error("you must select a valid batch file");
         }
     }
 }

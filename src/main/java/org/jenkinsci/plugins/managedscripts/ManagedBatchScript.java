@@ -52,7 +52,7 @@ public final class ManagedBatchScript extends FileMonitoringTask {
     @DataBoundConstructor
     public ManagedBatchScript(String script, String[] buildStepArgs) {
         this.script = script;
-        this.buildStepArgs = buildStepArgs;
+        this.buildStepArgs = buildStepArgs.clone();
     }
 
     public String getScript() {

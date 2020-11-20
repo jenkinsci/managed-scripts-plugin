@@ -1,3 +1,21 @@
+target
 work
 
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
 .idea
+out
+
+# eclipse project file
+/target/
+.classpath
+.project
+build
+
+# vim
+*~
+
+# OS X
+.DS_Store

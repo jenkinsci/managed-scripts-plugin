@@ -146,9 +146,11 @@ public class ScriptBuildStep extends Builder {
                 } else {
                     // the shell executable is already configured for the Shell
                     // task, reuse it
-                    final Shell.DescriptorImpl shellDescriptor = (Shell.DescriptorImpl) Jenkins.getActiveInstance().getDescriptor(Shell.class);
-                    final String interpreter = shellDescriptor.getShellOrDefault(workingDir.getChannel());
-                    args.add(interpreter);
+                    final Shell.DescriptorImpl shellDescriptor = (Shell.DescriptorImpl) Jenkins.get().getDescriptor(Shell.class);
+                    if (shellDescriptor != null) {
+                        final String interpreter = shellDescriptor.getShellOrDefault(workingDir.getChannel());
+                        args.add(interpreter);
+                    }
                 }
 
                 args.add(dest.getRemote());

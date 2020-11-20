@@ -46,7 +46,7 @@ public class ScriptConfig extends Config {
 
     @Override
     public ConfigProvider getDescriptor() {
-        return Jenkins.getActiveInstance().getDescriptorByType(ScriptConfigProvider.class);
+        return Jenkins.get().getDescriptorByType(ScriptConfigProvider.class);
     }
 
     public static class Arg implements Serializable {

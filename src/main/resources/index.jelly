@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   This plugin allows to centrally manage shell scripts and reference these as build steps in your builds.
 </div>

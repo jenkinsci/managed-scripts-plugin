@@ -38,7 +38,7 @@ public class PowerShellConfig extends Config {
 
     @Override
     public ConfigProvider getDescriptor() {
-        return Jenkins.getActiveInstance().getDescriptorByType(PowerShellConfigProvider.class);
+        return Jenkins.get().getDescriptorByType(PowerShellConfigProvider.class);
     }
 
   public static class Arg implements Serializable {

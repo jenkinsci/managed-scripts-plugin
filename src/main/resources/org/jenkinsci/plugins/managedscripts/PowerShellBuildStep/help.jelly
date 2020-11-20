@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   This step allows to reference and execute a centrally managed powershell script within your build.
   New files can be added in the <a href="${rootURL}/configfiles">global configuration</a>.

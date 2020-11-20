@@ -44,7 +44,7 @@ public class WinBatchConfig extends Config {
 
     @Override
     public ConfigProvider getDescriptor() {
-        return Jenkins.getActiveInstance().getDescriptorByType(WinBatchConfigProvider.class);
+        return Jenkins.get().getDescriptorByType(WinBatchConfigProvider.class);
     }
 
     public static class Arg implements Serializable {

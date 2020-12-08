@@ -57,7 +57,7 @@ public class WinBatchBuildStep extends CommandInterpreter {
     /**
      * The constructor used at form submission
      *
-     * @param buildStepId         the Id of the config file
+     * @param buildStepId the Id of the config file
      * @param scriptBuildStepArgs whether to save the args and arg values (the boolean is required because of html form submission, which also sends hidden values)
      */
     @DataBoundConstructor
@@ -77,7 +77,7 @@ public class WinBatchBuildStep extends CommandInterpreter {
     /**
      * The constructor
      *
-     * @param buildStepId   the Id of the config file
+     * @param buildStepId the Id of the config file
      * @param buildStepArgs list of arguments specified as buildStepargs
      */
     public WinBatchBuildStep(String buildStepId, String[] buildStepArgs) {
@@ -181,6 +181,7 @@ public class WinBatchBuildStep extends CommandInterpreter {
         public ListBoxModel doFillBuildStepIdItems(@AncestorInPath ItemGroup context) {
             List<Config> configsInContext = ConfigFiles.getConfigsInContext(context, WinBatchConfig.WinBatchConfigProvider.class);
             Collections.sort(configsInContext, new Comparator<Config>() {
+                @Override
                 public int compare(Config o1, Config o2) {
                     return o1.name.compareTo(o2.name);
                 }
@@ -192,54 +193,47 @@ public class WinBatchBuildStep extends CommandInterpreter {
             }
             return items;
         }
-
-        /**
-         * gets the argument description to be displayed on the screen when selecting a config in the dropdown
-         *
-         * @param configId the config id to get the arguments description for
-         * @return the description
-         */
-        private String getArgsDescription(@AncestorInPath Item context, String configId) {
-            final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, configId);
-            if (config != null) {
-                if (config.args != null && !config.args.isEmpty()) {
-                    StringBuilder sb = new StringBuilder("Required arguments: ");
-                    int i = 1;
-                    for (Iterator<Arg> iterator = config.args.iterator(); iterator.hasNext(); i++) {
-                        Arg arg = iterator.next();
-                        sb.append(i).append(". ").append(arg.name);
-                        if (iterator.hasNext()) {
-                            sb.append(" | ");
-                        }
-                    }
-                    return sb.toString();
-                } else {
-                    return "No arguments required";
-                }
-            }
-            return "please select a valid script!";
-        }
-
-        /**
-         * validate that an existing config was chosen
-         *
-         * @param buildStepId the buildStepId
-         * @return
-         */
-        public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
-            final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
-            if (config != null) {
-                return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));
-            } else {
-                return FormValidation.error("you must select a valid batch file");
-            }
-        }
-
-        private ConfigProvider getBuildStepConfigProvider() {
-            ExtensionList<ConfigProvider> providers = ConfigProvider.all();
-            return providers.get(WinBatchConfig.WinBatchConfigProvider.class);
-        }
-
     }
 
+    /**
+         * gets the argument description to be displayed on the screen when selecting a config in the dropdown
+     *
+     * @param configId the config id to get the arguments description for
+     * @return the description
+     */
+    private String getArgsDescription(@AncestorInPath Item context, String configId) {
+        final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, configId);
+        if (config != null) {
+            if (config.args != null && !config.args.isEmpty()) {
+                StringBuilder sb = new StringBuilder("Required arguments: ");
+                int i = 1;
+                for (Iterator<Arg> iterator = config.args.iterator(); iterator.hasNext(); i++) {
+                    Arg arg = iterator.next();
+                    sb.append(i).append(". ").append(arg.name);
+                    if (iterator.hasNext()) {
+                        sb.append(" | ");
+                    }
+                }
+                return sb.toString();
+            } else {
+                return "No arguments required";
+            }
+        }
+        return "please select a valid script!";
+    }
+
+    /**
+     * validate that an existing config was chosen
+     *
+     * @param buildStepId the buildStepId
+     * @return
+     */
+    public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
+        final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
+        if (config != null) {
+            return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));
+        } else {
+            return FormValidation.error("you must select a valid batch file");
+        }
+    }
 }

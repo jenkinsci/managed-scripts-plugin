@@ -58,7 +58,7 @@ public class PowerShellBuildStep extends CommandInterpreter {
     /**
      * The constructor used at form submission
      *
-     * @param buildStepId         the Id of the config file
+     * @param buildStepId the Id of the config file
      * @param scriptBuildStepArgs whether to save the args and arg values (the boolean is required because of html form submission, which also sends hidden values)
      */
     @DataBoundConstructor
@@ -78,7 +78,7 @@ public class PowerShellBuildStep extends CommandInterpreter {
     /**
      * The constructor
      *
-     * @param buildStepId   the Id of the config file
+     * @param buildStepId the Id of the config file
      * @param buildStepArgs list of arguments specified as buildStepargs
      */
     public PowerShellBuildStep(String buildStepId, String[] buildStepArgs) {
@@ -105,12 +105,10 @@ public class PowerShellBuildStep extends CommandInterpreter {
 
         // Add additional parameters set by user
         if (buildStepArgs != null) {
-            for (String arg : buildStepArgs) {
-                cml.add(arg);
-            }
+            cml.addAll(Arrays.asList(buildStepArgs));
         }
 
-        return (String[]) cml.toArray(new String[cml.size()]);
+        return cml.toArray(new String[cml.size()]);
     }
 
     @Override
@@ -222,6 +220,7 @@ public class PowerShellBuildStep extends CommandInterpreter {
         public ListBoxModel doFillBuildStepIdItems(@AncestorInPath ItemGroup context) {
             List<Config> configsInContext = ConfigFiles.getConfigsInContext(context, PowerShellConfig.PowerShellConfigProvider.class);
             Collections.sort(configsInContext, new Comparator<Config>() {
+                @Override
                 public int compare(Config o1, Config o2) {
                     return o1.name.compareTo(o2.name);
                 }
@@ -232,11 +231,6 @@ public class PowerShellBuildStep extends CommandInterpreter {
                 items.add(config.name, config.id);
             }
             return items;
-        }
-
-        private ConfigProvider getBuildStepConfigProvider() {
-            ExtensionList<ConfigProvider> providers = ConfigProvider.all();
-            return providers.get(PowerShellConfig.PowerShellConfigProvider.class);
         }
     }
 }

@@ -2,7 +2,6 @@ package org.jenkinsci.plugins.managedscripts;
 
 import hudson.model.Item;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.configfiles.utils.DescriptionResponse;
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -17,11 +16,11 @@ public class DetailLinkDescription extends DescriptionResponse {
 
     private static String getDetailsLink(StaplerRequest req, Item context, String fileId, String argumentDetails) {
         String link = req.getContextPath();
-        link = StringUtils.isNotBlank(context.getUrl()) ? link + "/" + context.getUrl() : link;
+        link = (context.getUrl() != null && !context.getUrl().trim().isEmpty()) ? link + "/" + context.getUrl() : link;
         link = link + "configfiles/show?id=" + fileId;
         String html = "<a target=\"_blank\" href=\"" + link + "\">view selected file</a>";
 
-        if (StringUtils.isNotBlank(argumentDetails)) {
+        if (argumentDetails != null && !argumentDetails.trim().isEmpty()) {
             html = html + "<br />" + argumentDetails;
         }
 

@@ -116,12 +116,12 @@ public class WinBatchBuildStep extends CommandInterpreter {
                 }
                 return buildStepConfig.content + "\r\nexit %ERRORLEVEL%";
             } else {
-                String msg = "current executable not accessable! can't get content of script: " + getBuildStepId();
+                String msg = "current executable not accessible! can't get content of script: " + getBuildStepId();
                 LOGGER.log(Level.SEVERE, msg);
                 throw new RuntimeException(msg);
             }
         } else {
-            String msg = "current executor not accessable! can't get content of script: " + getBuildStepId();
+            String msg = "current executor not accessible! can't get content of script: " + getBuildStepId();
             LOGGER.log(Level.SEVERE, msg);
             throw new RuntimeException(msg);
         }
@@ -175,7 +175,7 @@ public class WinBatchBuildStep extends CommandInterpreter {
                 }
             });
             ListBoxModel items = new ListBoxModel();
-            items.add("please select", "");
+            items.add(Messages.please_select(), "");
             for (Config config : configsInContext) {
                 items.add(config.name, config.id);
             }
@@ -192,21 +192,18 @@ public class WinBatchBuildStep extends CommandInterpreter {
             final WinBatchConfig config = ConfigFiles.getByIdOrNull(context, configId);
             if (config != null) {
                 if (config.args != null && !config.args.isEmpty()) {
-                    StringBuilder sb = new StringBuilder("Required arguments: ");
-                    int i = 1;
-                    for (Iterator<Arg> iterator = config.args.iterator(); iterator.hasNext(); i++) {
-                        Arg arg = iterator.next();
-                        sb.append(i).append(". ").append(arg.name);
-                        if (iterator.hasNext()) {
-                            sb.append(" | ");
-                        }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("<p>").append(Messages.required_arguments()).append("</p>\n<ol>");
+                    for (WinBatchConfig.Arg arg: config.args) {
+                        sb.append("<li>").append(arg.name).append("</li>\n");
                     }
+                    sb.append("</ol>\n");
                     return sb.toString();
                 } else {
-                    return "No arguments required";
+                    return Messages.no_arguments_required();
                 }
             }
-            return "please select a valid script!";
+            return Messages.please_select_a_valid_script();
         }
 
         /**
@@ -220,7 +217,7 @@ public class WinBatchBuildStep extends CommandInterpreter {
             if (config != null) {
                 return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));
             } else {
-                return FormValidation.error("you must select a valid batch file");
+                return FormValidation.error(Messages.you_must_select_a_valid_batch_file());
             }
         }
 

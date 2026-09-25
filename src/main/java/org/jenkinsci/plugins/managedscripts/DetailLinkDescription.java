@@ -18,7 +18,7 @@ public class DetailLinkDescription extends DescriptionResponse {
         String link = req.getContextPath();
         link = (context.getUrl() != null && !context.getUrl().trim().isEmpty()) ? link + "/" + context.getUrl() : link;
         link = link + "configfiles/show?id=" + fileId;
-        String html = "<a target=\"_blank\" href=\"" + link + "\">view selected file</a>";
+        String html = "<a target=\"_blank\" href=\"" + link + "\">" + Messages.view_selected_file() + "</a>";
 
         if (argumentDetails != null && !argumentDetails.trim().isEmpty()) {
             html = html + "<br />" + argumentDetails;

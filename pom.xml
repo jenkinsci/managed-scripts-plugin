@@ -1,88 +1,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>4.55</version>
-    </parent>
-
-    <groupId>org.jenkinsci.plugins</groupId>
-    <artifactId>managed-scripts</artifactId>
-    <version>${revision}${changelist}</version>
-    <packaging>hpi</packaging>
-    <name>Managed Scripts</name>
-    <description>Managed scripts are shell script which are managed centrally by an administrator and can be referenced as a build step within jobs.</description>
-
-    <properties>
-        <revision>1.6</revision>
-        <changelist>-SNAPSHOT</changelist>
-        <gitHubRepo>jenkinsci/managed-scripts-plugin</gitHubRepo>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-        <jenkins.version>2.319.3</jenkins.version>
-    </properties>
-
-    <url>https://github.com/jenkinsci/managed-scripts-plugin</url>
-    <scm>
-        <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
-        <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
-        <url>https://github.com/${gitHubRepo}</url>
-      <tag>${scmTag}</tag>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>maven.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/releases</url>
-        </repository>
-    </distributionManagement>
-    <developers>
-        <developer>
-            <id>imod</id>
-            <name>Dominik Bartholdi</name>
-        </developer>
-        <developer>
-            <id>gbigenios</id>
-            <name>J White</name>
-        </developer>
-    </developers>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>6.2236.v12dd4c483242</version>
+  </parent>
+  <artifactId>managed-scripts</artifactId>
+  <version>${revision}${changelist}</version>
+  <packaging>hpi</packaging>
+  <name>Managed Scripts</name>
+  <description>Managed scripts are shell script which are managed centrally by an administrator and can be referenced as a build step within jobs.</description>
+  <url>https://github.com/jenkinsci/managed-scripts-plugin</url>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
+    <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
+    <url>https://github.com/${gitHubRepo}</url>
+    <tag>${scmTag}</tag>
+  </scm>
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>config-file-provider</artifactId>
-            <version>3.11.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>token-macro</artifactId>
-            <version>321.vd7cc1f2a_52c8</version>
-        </dependency>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>5473.vb_9533d9e5d88</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>config-file-provider</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>token-macro</artifactId>
+    </dependency>
+  </dependencies>
+  <properties>
+    <revision>1.6</revision>
+    <changelist>999999-SNAPSHOT</changelist>
+    <gitHubRepo>jenkinsci/managed-scripts-plugin</gitHubRepo>
+    <jenkins.baseline>2.492</jenkins.baseline>
+    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+  </properties>
 </project>

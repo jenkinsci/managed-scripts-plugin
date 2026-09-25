@@ -5,7 +5,8 @@
         <f:select />
     </f:entry>
 
-    <a target="_blank" style="display:none;" href="" onclick="window.open(this.href,'window','width=900,height=640,resizable,scrollbars,toolbar,menubar') ;return false;">view selected script</a>
+    <st:adjunct includes="org.jenkinsci.plugins.managedscripts.PowerShellBuildStep.powershell-build-step"/>
+    <a target="_blank" style="display:none;" href="" class="powershell-script-window-link">view selected script</a>
 
     <f:optionalBlock name="defineArgs" inline="true" title="${%Define arguments}" checked="${!empty(instance.buildStepArgs)}" help="/plugin/managed-scripts/help-defineArgs_powershell.html">
         <f:repeatable var="arg" items="${instance.buildStepArgs}" name="buildStepArgs" noAddButton="true" minimum="1">
@@ -13,7 +14,7 @@
                 <div name="argName"><st:nbsp/></div>
                 <input type="text" name="arg" value="${arg}" size="80"/>
                 <input type="button" name="delete_button" value="${%Delete}" class="repeatable-delete show-if-not-only" style="margin-left: 1em;" />
-                <input type="button" name="add_button" onClick="ms_labelArgs()" value="${%Add argument}" class="repeatable-add show-if-last" />
+                <input type="button" name="add_button" value="${%Add argument}" class="repeatable-add show-if-last" />
             </f:entry>
         </f:repeatable>
     </f:optionalBlock>

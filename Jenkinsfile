@@ -1,35 +1,9 @@
-#!/usr/bin/env groovy
-
-String mavenCommand = 'mvn clean install -Dmaven.test.failure.ignore=true'
-String testReports = '**/target/surefire-reports/**/*.xml'
-
-Map platforms = [:]
-
-platforms['windows'] = {
-    node('windows') {
-        checkout scm
-        withEnv([
-            "JAVA_HOME=${tool 'jdk8'}",
-            "PATH+MAVEN=${tool 'mvn'}/bin",
-        ]) {
-            bat mavenCommand
-        }
-        junit testReports
-    }
-}
-
-platforms['linux'] = {
-    node('linux') {
-        checkout scm
-        withEnv([
-            "JAVA_HOME=${tool 'jdk8'}",
-            "PATH+MAVEN=${tool 'mvn'}/bin",
-        ]) {
-            sh mavenCommand
-        }
-        junit testReports
-    }
-}
-
-stage 'build'
-parallel(platforms)
+buildPlugin(
+    useContainerAgent: true,
+    configurations: [
+        [platform: 'linux', jdk: 17],
+        [platform: 'windows', jdk: 17],
+        [platform: 'linux', jdk: 21],
+        [platform: 'windows', jdk: 21]
+    ]
+)

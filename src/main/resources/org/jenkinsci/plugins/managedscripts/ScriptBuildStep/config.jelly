@@ -5,19 +5,19 @@
         <f:select />
     </f:entry>
 
-    <a target="_blank" style="display:none;" href="" onclick="window.open(this.href,'window','width=900,height=640,resizable,scrollbars,toolbar,menubar') ;return false;">view selected script</a>
+    <a target="_blank" style="display:none;" href="" onclick="window.open(this.href,'window','width=900,height=640,resizable,scrollbars,toolbar,menubar') ;return false;">${%view selected script}</a>
 
     <f:optionalBlock name="defineArgs" inline="true" title="${%Define arguments}" checked="${!empty(instance.buildStepArgs)}" help="/plugin/managed-scripts/help-defineArgs.html">
         <f:entry field="tokenized">
             <f:checkbox title="${%Tokenized}" checked="${instance.isTokenized()}" />
         </f:entry>
-        <f:repeatable var="arg" items="${instance.buildStepArgs}" name="buildStepArgs" noAddButton="true" minimum="1">
-            <f:entry>
-                <div name="argName"><st:nbsp/></div>
-                <input type="text" name="arg" value="${arg}" size="80"/>
-                <input type="button" name="delete_button" value="${%Delete}" class="repeatable-delete show-if-not-only" style="margin-left: 1em;" />
-                <input type="button" name="add_button" onClick="ms_labelArgs()" value="${%Add argument}" class="repeatable-add show-if-last" />
+        <f:repeatable var="arg" items="${instance.buildStepArgs}" name="buildStepArgs" minimum="1" varStatus="status">
+            <f:entry field="arg" title="${%Argument value}">
+                <f:textbox value="${arg}" />
             </f:entry>
+            <div class="show-if-not-only">
+                <f:repeatableDeleteButton />
+            </div>
         </f:repeatable>
     </f:optionalBlock>
 

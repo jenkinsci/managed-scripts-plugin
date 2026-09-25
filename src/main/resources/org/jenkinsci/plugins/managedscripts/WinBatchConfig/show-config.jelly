@@ -25,8 +25,8 @@
 			<f:entry title="${%Argument list}" field="config.args">
 				<f:repeatable var="arg" items="${config.args}" name="args" noAddButton="true" minimum="1">
 					<ms:blockWrapper width="100%">
-						<f:entry>
-							<input type="text" readonly="readonly" name="name" value="${arg.name}" />
+						<f:entry field="name" title="${%Argument description}">
+							<f:textbox readonly="readonly" value="${arg.name}" />
 						</f:entry>
 					</ms:blockWrapper>
 				</f:repeatable>

@@ -37,13 +37,14 @@ THE SOFTWARE.
     <f:block>
         <ms:blockWrapper>
             <f:entry title="${%Argument list}" field="config.args">
-                <f:repeatable var="arg" items="${config.args}" name="args" noAddButton="true" minimum="1">
+                <f:repeatable var="arg" items="${config.args}" name="args" minimum="1">
                     <ms:blockWrapper width="100%">
-                        <f:entry>
-                            <input type="text" name="name" value="${arg.name}" size="40" />
-                            <input type="button" name="delete_button" value="${%Delete}" class="repeatable-delete show-if-not-only" style="margin-left: 1em;" />
-                            <input type="button" name="add_button" value="${%Add argument}" class="repeatable-add show-if-last" />
+                        <f:entry field="name" title="${%Argument description}">
+                            <f:textbox value="${arg.name}" />
                         </f:entry>
+                        <div class="show-if-not-only">
+                           <f:repeatableDeleteButton />
+                        </div>
                     </ms:blockWrapper>
                 </f:repeatable>
             </f:entry>

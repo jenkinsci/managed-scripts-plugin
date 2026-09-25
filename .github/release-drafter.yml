@@ -1,4 +1,0 @@
-_extends: .github
-name-template: v$NEXT_MINOR_VERSION 🌈
-tag-template: managed-scripts-$NEXT_MINOR_VERSION
-version-template: $MAJOR.$MINOR.$PATCH

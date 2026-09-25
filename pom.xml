@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.48</version>
+        <version>4.55</version>
     </parent>
 
     <groupId>org.jenkinsci.plugins</groupId>
@@ -52,12 +52,12 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>config-file-provider</artifactId>
-            <version>3.7.0</version>
+            <version>3.11.1</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>token-macro</artifactId>
-            <version>2.8</version>
+            <version>321.vd7cc1f2a_52c8</version>
         </dependency>
     </dependencies>
 

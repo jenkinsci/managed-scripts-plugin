@@ -5,6 +5,7 @@
     <artifactId>plugin</artifactId>
     <version>6.2236.v12dd4c483242</version>
   </parent>
+  <groupId>org.jenkinsci.plugins</groupId>
   <artifactId>managed-scripts</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
@@ -63,7 +64,6 @@
     <jenkins.baseline>2.492</jenkins.baseline>
     <jenkins.version>${jenkins.baseline}.3</jenkins.version>
     <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
   <build>
     <plugins>

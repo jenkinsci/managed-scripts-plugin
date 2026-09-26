@@ -7,7 +7,7 @@
   </parent>
   <groupId>org.jenkinsci.plugins</groupId>
   <artifactId>managed-scripts</artifactId>
-  <version>${revision}${changelist}</version>
+  <version>${revision}.${changelist}</version>
   <packaging>hpi</packaging>
   <name>Managed Scripts</name>
   <description>Managed scripts are shell script which are managed centrally by an administrator and can be referenced as a build step within jobs.</description>

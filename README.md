@@ -1,18 +1,17 @@
-Managed Scripts plugin for Jenkins
-======================
+# Managed Scripts Plugin
 
 [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/managed-scripts-plugin/master)](https://ci.jenkins.io/blue/organizations/jenkins/Plugins%2Fmanaged-scripts-plugin/branches/)
 [![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/managed-scripts.svg)](https://plugins.jenkins.io/managed-scripts)
 [![GitHub release](https://img.shields.io/github/release/jenkinsci/managed-scripts-plugin.svg?label=changelog)](https://github.com/jenkinsci/managed-scripts-plugin/releases/latest)
 [![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/managed-scripts.svg?color=blue)](https://plugins.jenkins.io/managed-scripts)
 
-# Managed Scripts Plugin
+## Introduction
 
 Managed scripts are shell scripts which are managed centrally by an administrator and can be referenced as a build step within jobs.
 
 ## Requirements
 
-- Jenkins 2.319.3 or newer
+- Jenkins 2.492.3 or newer
 - [Config File Provider Plugin](https://plugins.jenkins.io/config-file-provider/) (required dependency)
 
 ## Description

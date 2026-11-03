@@ -191,7 +191,7 @@ public class PowerShellBuildStep extends CommandInterpreter {
          * @param buildStepId the buildStepId
          * @return
          */
-        public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
+        public HttpResponse doCheckBuildStepId(StaplerRequest2 req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
             final PowerShellConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
             if (config != null) {
                 return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));

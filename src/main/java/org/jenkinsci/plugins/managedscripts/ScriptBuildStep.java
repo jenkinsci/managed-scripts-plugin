@@ -269,7 +269,7 @@ public class ScriptBuildStep extends Builder {
          * @param buildStepId the buildStepId
          * @return whether the config exists or not
          */
-        public HttpResponse doCheckBuildStepId(StaplerRequest req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
+        public HttpResponse doCheckBuildStepId(StaplerRequest2 req, @AncestorInPath Item context, @QueryParameter String buildStepId) {
             final ScriptConfig config = ConfigFiles.getByIdOrNull(context, buildStepId);
             if (config != null) {
                 return DetailLinkDescription.getDescription(req, context, buildStepId, getArgsDescription(context, buildStepId));

@@ -3,18 +3,18 @@ package org.jenkinsci.plugins.managedscripts;
 import hudson.model.Item;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.configfiles.utils.DescriptionResponse;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 
 public class DetailLinkDescription extends DescriptionResponse {
     private DetailLinkDescription(String linkHtml) {
         super(linkHtml);
     }
 
-    public static DetailLinkDescription getDescription(StaplerRequest req, Item context, String fileId, String argumentDetails) {
+    public static DetailLinkDescription getDescription(StaplerRequest2 req, Item context, String fileId, String argumentDetails) {
         return new DetailLinkDescription(getDetailsLink(req, context, fileId, argumentDetails));
     }
 
-    private static String getDetailsLink(StaplerRequest req, Item context, String fileId, String argumentDetails) {
+    private static String getDetailsLink(StaplerRequest2 req, Item context, String fileId, String argumentDetails) {
         String link = req.getContextPath();
         link = (context.getUrl() != null && !context.getUrl().trim().isEmpty()) ? link + "/" + context.getUrl() : link;
         link = link + "configfiles/show?id=" + fileId;
